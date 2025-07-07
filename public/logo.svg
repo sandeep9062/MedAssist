@@ -1,0 +1,19 @@
+<svg width="250" height="80" viewBox="0 0 250 80" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <defs>
+    <linearGradient id="med-gradient" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0E7C86" />
+      <stop offset="100%" stop-color="#4CAF50" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Circle Background with Medical Gradient -->
+  <circle cx="40" cy="40" r="35" fill="url(#med-gradient)" />
+  
+  <!-- Medical Cross -->
+  <path d="M40 22V58M22 40H58" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
+  
+  <!-- Brand Text -->
+  <text x="90" y="50" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" fill="#1C1C1C" letter-spacing="1">
+    MedAssist
+  </text>
+</svg>
