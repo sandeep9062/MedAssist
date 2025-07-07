@@ -15,6 +15,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // ✅ Assign to constants after validation (TypeScript-safe)
+    const name = user.fullName;
     const email = user.primaryEmailAddress.emailAddress;
 
     const users = await db
@@ -26,8 +28,8 @@ export async function POST(req: NextRequest) {
       const result = await db
         .insert(usersTable)
         .values({
-          name: user.fullName, // ✅ Already validated above
-          email: email,
+          name,  // ✅ Safe, guaranteed non-null
+          email,
           credits: 10,
         })
         .returning({
@@ -35,7 +37,7 @@ export async function POST(req: NextRequest) {
           name: usersTable.name,
           email: usersTable.email,
           credits: usersTable.credits,
-        }); // ✅ Corrected: Return specific columns, not table
+        });
 
       return NextResponse.json(result[0]);
     }
