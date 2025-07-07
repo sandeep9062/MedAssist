@@ -8,9 +8,9 @@ export async function POST(req: NextRequest) {
   try {
     const user = await currentUser();
 
-    if (!user || !user.primaryEmailAddress?.emailAddress) {
+    if (!user || !user.primaryEmailAddress?.emailAddress || !user.fullName) {
       return NextResponse.json(
-        { error: "Unauthorized or missing email." },
+        { error: "Unauthorized or missing required user data." },
         { status: 401 }
       );
     }
@@ -22,16 +22,22 @@ export async function POST(req: NextRequest) {
       .from(usersTable)
       .where(eq(usersTable.email, email));
 
-    if (users?.length == 0) {
+    if (users.length === 0) {
       const result = await db
         .insert(usersTable)
         .values({
-          name: user?.fullName,
-          email: user?.primaryEmailAddress?.emailAddress,
+          name: user.fullName, // ✅ Already validated above
+          email: email,
           credits: 10,
         })
-        .returning({ usersTable }); // Return the inserted user
-      return NextResponse.json(result[0]?.usersTable);
+        .returning({
+          id: usersTable.id,
+          name: usersTable.name,
+          email: usersTable.email,
+          credits: usersTable.credits,
+        }); // ✅ Corrected: Return specific columns, not table
+
+      return NextResponse.json(result[0]);
     }
 
     // User already exists, return existing user
